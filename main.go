@@ -56,13 +56,18 @@ func main() {
 	for {
 		now := time.Now()
 		y, m, d := now.Date()
-		daysSinceNewYear := (int(m) * 31) + d                             // very rough calculation
-		dailyQuoteNumber := abs(daysSinceNewYear%len(quotes) - 1)         // 0-based index
 		time.Sleep(time.Until(time.Date(y, m, d, 10, 0, 0, 0, time.UTC))) // wait until 10:00
+		if now.Hour() > 10 {                                              // but if it's after 10, wait until tomorrow
+			time.Sleep(time.Until(time.Date(y, m, (d + 1), 10, 0, 0, 0, time.UTC)))
+		}
+		now = time.Now()                                          // recalculate "now" after sleep
+		y, m, d = now.Date()                                      // ...and date
+		daysSinceNewYear := (int(m) * 31) + d                     // lazy rough approximation
+		dailyQuoteNumber := abs(daysSinceNewYear%len(quotes) - 1) // 0-based index, abs() in case I'm wrong to prevent oob
 		if err := sendSMS(quotes[dailyQuoteNumber]); err != nil {
 			fmt.Println(err)
 		}
-		time.Sleep(time.Hour) // forced sleep of minimum 1h (time to ^C block loop)
+		time.Sleep(time.Hour) // forced sleep of minimum 1hr (time to ^C break loop)
 	}
 }
 
