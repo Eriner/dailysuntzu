@@ -9,3 +9,5 @@ A quick program written for a friend who wanted Sun Tzu in a "daily digest" form
 Copy `docker-compose.yml` to  `docker-compose.override.yml` and add Twilio stuff.
 
 Run `docker-compose --build -d` to run as daemon.
+
+After building and running, you can run `docker system prune` to remove the build layer and reclaim some disk space.
