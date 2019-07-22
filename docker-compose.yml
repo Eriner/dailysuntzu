@@ -1,0 +1,10 @@
+version: '2.1'
+
+services:
+  dailysuntzu:
+    build: .
+    environment:
+      - TWILIO_SID=xxx
+      - TWILIO_TOKEN=xxx
+      - TWILIO_SENDER=+15555555555
+      - TWILIO_RECIPIENTS=+15555555555,+15555555555
