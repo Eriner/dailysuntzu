@@ -6,4 +6,6 @@ A quick program written for a friend who wanted Sun Tzu in a "daily digest" form
 
 ## Usage
 
-Modify `docker-compose.yml` to add Twilio stuff and run `docker-compose --build -d`
+Copy `docker-compose.yml' to  `docker-compose.override.yml` and add Twilio stuff.
+
+Run `docker-compose --build -d` to run as daemon.

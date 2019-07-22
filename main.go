@@ -57,7 +57,7 @@ func main() {
 		now := time.Now()
 		y, m, d := now.Date()
 		daysSinceNewYear := (int(m) * 31) + d                             // very rough calculation
-		dailyQuoteNumber := daysSinceNewYear%len(quotes) - 1              // 0-based index
+		dailyQuoteNumber := abs(daysSinceNewYear%len(quotes) - 1)         // 0-based index
 		time.Sleep(time.Until(time.Date(y, m, d, 10, 0, 0, 0, time.UTC))) // wait until 10:00
 		if err := sendSMS(quotes[dailyQuoteNumber]); err != nil {
 			fmt.Println(err)
@@ -67,6 +67,7 @@ func main() {
 }
 
 func sendSMS(s string) error {
+	s = fmt.Sprintf("%q\n    -Sun Tzu", s)
 	for _, to := range recipients {
 		msg := url.Values{}
 		msg.Set("To", to)
@@ -85,12 +86,24 @@ func sendSMS(s string) error {
 		if err != nil {
 			return err
 		}
+		defer resp.Body.Close()
 		if !(resp.StatusCode >= 200 && resp.StatusCode < 300) {
 			fmt.Println(resp.Status)
+			body, err := ioutil.ReadAll(resp.Body)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(body))
 			return errors.New("Unexpected status code in Twilio response")
 		}
 		fmt.Println(s) // print the quote just because
-		resp.Body.Close()
 	}
 	return nil
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
 }
