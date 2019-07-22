@@ -67,7 +67,7 @@ func main() {
 }
 
 func sendSMS(s string) error {
-	s = fmt.Sprintf("%q\n    -Sun Tzu", s)
+	s = fmt.Sprintf("%q\n    - Sun Tzu", s)
 	for _, to := range recipients {
 		msg := url.Values{}
 		msg.Set("To", to)
