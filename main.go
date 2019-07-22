@@ -73,6 +73,7 @@ func main() {
 
 func sendSMS(s string) error {
 	s = fmt.Sprintf("%q\n    - Sun Tzu", s)
+	fmt.Println(s)
 	for _, to := range recipients {
 		msg := url.Values{}
 		msg.Set("To", to)
@@ -101,7 +102,7 @@ func sendSMS(s string) error {
 			fmt.Println(string(body))
 			return errors.New("Unexpected status code in Twilio response")
 		}
-		fmt.Println(s) // print the quote just because
+		fmt.Println("sent quote to: ", to)
 	}
 	return nil
 }
